@@ -6,10 +6,10 @@ public class Tile {
     private int[] index; // store in object, use in main
 
 
-    public Tile(int v, int col, int row){
-        displayValue = "";
+    public Tile(int row, int col){
+        displayValue = "[-]";
         revealed = false;
-        trueValue = v;
+        trueValue = 0;
         flagged = false;
         index = new int[]{row, col};
     }
@@ -26,15 +26,18 @@ public class Tile {
         return index;
     }
 
+    public void setTrueValue(int tv){
+        trueValue = tv;
+    }
+
     public void flag(){
-        flagged = true;
-        if (!displayValue.equals("U")){displayValue = "⚑";} // Flag only if unknown
+        if (!revealed){displayValue = "⚑"; flagged = true;} // Flag only if not revealed
     }
 
     public void unflag(){
         if (flagged) { // Unflag ONLY if flagged
             flagged = false; 
-            if (!revealed){displayValue = "U";} // Set unknown if it was not revealed
+            if (!revealed){displayValue = "[-]";} // Set unknown if it was not revealed
             else {displayValue = String.valueOf(trueValue);} // Set to value if known
         }
     }

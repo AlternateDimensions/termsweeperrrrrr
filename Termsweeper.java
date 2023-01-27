@@ -3,22 +3,31 @@ import java.util.ArrayList;
 
 /* Termsweeper Class */
 public class Termsweeper {
-    private static int[][] board;
-    /* Main method - runs the game */
-    public static void main(String args[]) {
-        System.out.println("new loop iteration");
-        
-        board = new int[][]{
-            /*    0  1  2 */
-            /*0*/{1, 0, 1},
-            /*1*/{0, 0, 0},
-            /*2*/{0, 0, 0}
-        };
-        int currentRow = 1;
-        int currentColumn = 0;
-        String bombs = checkField(new int[]{currentRow, currentColumn}); // tile display
+    private static Tile[][] board;
 
-        System.out.println(bombs+" bombs");
+    /* Main method - runs the game */
+    public static void main(String args[]) {        
+        generateBoard(16,16);
+        int bombs = 0;
+        while (bombs < 16){
+            bombs = generateBombs();
+        }
+
+
+    }
+
+    private static void generateBoard(int rows, int columns){
+        Tile[][] newBoard = new Tile[rows][columns];
+        for (int i = 0; i < board.length; i++){
+            for (int j = 0; j < board[i].length; j++){
+                board[i][j] = new Tile(i, j);
+            }
+        }
+        board = newBoard;
+    }
+
+    private static void generateBombs(){
+        for
     }
 
     private static String checkField(int[] selectedBox){
@@ -45,5 +54,5 @@ public class Termsweeper {
             return String.valueOf(tempBombCount);
         }
     }
-
+    */
 }
