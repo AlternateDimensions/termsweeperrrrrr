@@ -18,28 +18,44 @@ public class Tile {
         return displayValue;
     }
 
-    public int getTrueValue(){
-        return trueValue;
+    public void setDisplayValue(String dv){
+        displayValue = dv;
     }
 
-    public int[] getIndex(){
-        return index;
+    public int getTrueValue(){
+        return trueValue;
     }
 
     public void setTrueValue(int tv){
         trueValue = tv;
     }
 
+    public boolean getRevealed(){
+        return revealed;
+    }
+
+    public void setRevealed(boolean r){
+        revealed = r;
+    }
+
+    public boolean getFlagged(){
+        return flagged;
+    }
+
+    public void setFlagged(boolean f){
+        flagged = f;
+    }
+    
+    public int[] getIndex(){
+        return index;
+    }
+
     public void flag(){
-        if (!revealed){displayValue = "⚑"; flagged = true;} // Flag only if not revealed
+        if (!revealed){flagged = true;} // Flag only if not revealed
     }
 
     public void unflag(){
-        if (flagged) { // Unflag ONLY if flagged
-            flagged = false; 
-            if (!revealed){displayValue = "[-]";} // Set unknown if it was not revealed
-            else {displayValue = String.valueOf(trueValue);} // Set to value if known
-        }
+        if (flagged) {flagged = false;} // Unflag ONLY if flagged
     }
 
 }
