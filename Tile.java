@@ -36,26 +36,25 @@ public class Tile {
 
     public void setRevealed(boolean r){
         revealed = r;
+        if (revealed){
+            flagged = false;
+        }
     }
 
     public boolean getFlagged(){
         return flagged;
-    }
-
-    public void setFlagged(boolean f){
-        flagged = f;
     }
     
     public int[] getIndex(){
         return index;
     }
 
-    public void flag(){
-        if (!revealed){flagged = true;} // Flag only if not revealed
+    public boolean flag(){
+        if (!revealed){flagged = true; return true;} return false; // Flag only if not revealed
     }
 
-    public void unflag(){
-        if (flagged) {flagged = false;} // Unflag ONLY if flagged
+    public boolean unflag(){
+        if (flagged) {flagged = false; return true;} return false; // Unflag ONLY if flagged
     }
 
 }
