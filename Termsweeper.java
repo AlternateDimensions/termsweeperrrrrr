@@ -13,7 +13,7 @@ public class Termsweeper {
             sc = new Scanner(System.in);
 
             // Create the board
-            sizeRow = 16; sizeCol = 16;
+            sizeRow = 5; sizeCol = 5;
             Board board = new Board(sizeRow, sizeCol);
 
             play(board);

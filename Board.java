@@ -170,7 +170,6 @@ public class Board {
 
     public String getFinalTime(){
         time = (int) ((System.currentTimeMillis()-startTime)/60000);
-        System.out.println(time);
         timeSeconds = ((int) ((System.currentTimeMillis()-startTime)/1000))%60 < 10 ? "0"+String.valueOf(((int) ((System.currentTimeMillis()-startTime)/1000))%60) : String.valueOf(((int) ((System.currentTimeMillis()-startTime)/1000))%60);
         return (time+":"+timeSeconds);
     }
