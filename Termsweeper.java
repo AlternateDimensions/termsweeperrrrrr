@@ -13,7 +13,24 @@ public class Termsweeper {
             sc = new Scanner(System.in);
 
             // Create the board
-            sizeRow = 5; sizeCol = 5;
+            sizeRow = 0; sizeCol = 0;
+
+            try{
+                //sc.nextLine();
+                System.out.print("\u001b[2J\u001b[1;2H\033[3mFrankBrian presents: \033[4mTermsweeper\n\033[0m\n[ACTION] Number of rows: ");
+                sizeRow = sc.nextInt();
+                System.out.print("[ACTION] Number of columns: ");
+                sizeCol = sc.nextInt();
+                if (sizeRow == 0 || sizeCol == 0){
+                    throw new IllegalArgumentException();
+                }
+            } catch (Exception e){
+                sc.nextLine();
+                System.out.println("\n\033[43mYour input(s) (and your opinion) was invalid! Defaulting to value (16,16)\033[0m");
+                try{Thread.sleep(3000);}catch(Exception ignore){}
+                sizeRow = 16; sizeCol = 16;
+            }
+
             Board board = new Board(sizeRow, sizeCol);
 
             play(board);

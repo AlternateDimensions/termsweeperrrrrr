@@ -25,7 +25,7 @@ public class Board {
         bombs = 0;
         flags = 0;
         double threshold = 0.08;
-        while (bombs < 16){
+        while (bombs < (int) (0.15*(rows*columns))){
             bombs = generateBombs(bombs, threshold);
         }
         totalBombs = bombs;
@@ -57,6 +57,10 @@ public class Board {
             }
             System.out.print("\n");
         }
+
+        System.out.println(flags);
+        System.out.println(bombs);
+        try{Thread.sleep(3000);}catch(Exception ignore){}
     }
 
     private int generateBombs(int b, double t){
@@ -64,7 +68,7 @@ public class Board {
         for (Tile[] row : board){
             for (Tile tile : row){
                 double bombGen = Math.random();
-                if (bombGen <= t){
+                if (bombGen <= t && tile.getTrueValue() != -1){
                     tile.setTrueValue(-1);
                     tempBombCount++;
                 }
@@ -137,6 +141,9 @@ public class Board {
     public int checkSquare(int r, int c, boolean ignoreCheck){
         if (!ignoreCheck){
             board[r-1][c-1].setRevealed(true);
+            if (board[r-1][c-1].getFlagged()){
+                flags--;
+            }
             if (board[r-1][c-1].getTrueValue() == -1){
                 return 0;
             }else if (board[r-1][c-1].getTrueValue() == 0){
@@ -154,16 +161,23 @@ public class Board {
     public void flagSquare(int r, int c){
         boolean isFlagged = board[r-1][c-1].getFlagged(); // flag status of tile
         if (isFlagged){
-            if (board[r-1][c-1].unflag() && board[r-1][c-1].getTrueValue() == -1){
-                bombs++;
+            if (board[r-1][c-1].unflag()) {
+                flags--;
+                if (board[r-1][c-1].getTrueValue() == -1){
+                    bombs++;
+                }
             }
-            flags--;
         } else {
-            if (board[r-1][c-1].flag() && board[r-1][c-1].getTrueValue() == -1){
-                bombs--;
+            if (board[r-1][c-1].flag()) {
+                flags++;
+                if (board[r-1][c-1].getTrueValue() == -1){
+                    bombs--;
+                }
             }
-            flags++;
         }
+        System.out.println(flags);
+        System.out.println(bombs);
+        try{Thread.sleep(3000);}catch(Exception ignore){}
         checkSquare(r, c, true);
     }
     
