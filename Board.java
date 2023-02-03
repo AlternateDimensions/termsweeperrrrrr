@@ -37,8 +37,8 @@ public class Board {
         updateDisplayBoard();
     }
 
-    public void display(){
-        updateDisplayBoard();
+    public void display(){ // prints out the display values of the board
+        updateDisplayBoard(); // make sure board is updated
         time = (int) ((System.currentTimeMillis()-startTime)/60000);
         System.out.println("\u001b[2J\u001b[1;2H\033[3mFrankBrian presents: \033[4mTermsweeper\033[0m   |   Time: "+time+" min\n");
         int colref = 0;
@@ -57,13 +57,10 @@ public class Board {
             }
             System.out.print("\n");
         }
-
-        System.out.println(flags);
-        System.out.println(bombs);
-        try{Thread.sleep(3000);}catch(Exception ignore){}
     }
 
     private int generateBombs(int b, double t){
+        // uses value t as a chance for tile to be bomb
         int tempBombCount = b;
         for (Tile[] row : board){
             for (Tile tile : row){
@@ -77,7 +74,7 @@ public class Board {
         return tempBombCount;
     }
 
-    private void generateValues(){
+    private void generateValues(){ // generates the true value for each tile
         for (Tile[] row : board){ // For each row
             for (Tile t : row){ // For each tile
                 int tempBombCount = 0;
@@ -103,7 +100,7 @@ public class Board {
         }
     }
 
-    private void updateDisplayBoard(){
+    private void updateDisplayBoard(){ // updates String 2d array with display values
         String[][] newDisplayBoard = new String[board.length][board[0].length];
         updateDisplayBoardValues();
         for (int i = 0; i < board.length; i++){
@@ -114,7 +111,7 @@ public class Board {
         displayBoard = newDisplayBoard;
     }
 
-    private void updateDisplayBoardValues(){
+    private void updateDisplayBoardValues(){ // updates the values based on the status of the tiles. Color the numbers also
         for (Tile[] row : board){
             for (Tile t : row){
                 if (t.getRevealed()){ // if revealed
@@ -138,7 +135,8 @@ public class Board {
         }
     }
 
-    public int checkSquare(int r, int c, boolean ignoreCheck){
+    public int checkSquare(int r, int c, boolean ignoreCheck){ // handles checking the square for win/loss and then returning status of game
+        // ignoreCheck if the check for bomb/not bomb is needed or not
         if (!ignoreCheck){
             board[r-1][c-1].setRevealed(true);
             if (board[r-1][c-1].getFlagged()){
@@ -151,6 +149,7 @@ public class Board {
             }
         }
         
+        // checks win condition
         if (bombs == 0 && flags == totalBombs){
             return 2;
         }
@@ -158,16 +157,16 @@ public class Board {
         return 1;
     }
 
-    public void flagSquare(int r, int c){
+    public int flagSquare(int r, int c){ // handles flagging and then also checks win/loss
         boolean isFlagged = board[r-1][c-1].getFlagged(); // flag status of tile
-        if (isFlagged){
+        if (isFlagged){ // is flagged, unflag
             if (board[r-1][c-1].unflag()) {
                 flags--;
                 if (board[r-1][c-1].getTrueValue() == -1){
                     bombs++;
                 }
             }
-        } else {
+        } else { // not flagged, flag
             if (board[r-1][c-1].flag()) {
                 flags++;
                 if (board[r-1][c-1].getTrueValue() == -1){
@@ -175,20 +174,19 @@ public class Board {
                 }
             }
         }
-        System.out.println(flags);
-        System.out.println(bombs);
-        try{Thread.sleep(3000);}catch(Exception ignore){}
-        checkSquare(r, c, true);
+        // checks the game status without checking current square
+        int gameStatus = checkSquare(r, c, true);
+        return gameStatus;
     }
     
 
-    public String getFinalTime(){
+    public String getFinalTime(){ // calculates how long the game has gone on for 
         time = (int) ((System.currentTimeMillis()-startTime)/60000);
         timeSeconds = ((int) ((System.currentTimeMillis()-startTime)/1000))%60 < 10 ? "0"+String.valueOf(((int) ((System.currentTimeMillis()-startTime)/1000))%60) : String.valueOf(((int) ((System.currentTimeMillis()-startTime)/1000))%60);
         return (time+":"+timeSeconds);
     }
 
-    private void recursiveSearch(int r, int c){ // recursively searches the board for 0s
+    private void recursiveSearch(int r, int c){ // recursively searches the board for 0s. If found, add that tile to tiles to check.
         ArrayList<int[]> indicesToCheck = new ArrayList<int[]>();
         ArrayList<int[]> indicesChecked = new ArrayList<int[]>();
 
@@ -211,13 +209,13 @@ public class Board {
                     Tile tempTile = board[indicesToCheck.get(0)[0]+index[0]][indicesToCheck.get(0)[1]+index[1]];
 
                     if (indicesChecked.contains(tempTile.getIndex()) == false){
-                        if (tempTile.getTrueValue() == 0){ // is an empty space
+                        if (tempTile.getTrueValue() == 0){ // is an empty space, add to the check list and reveal
                             indicesToCheck.add(tempTile.getIndex());
                             board[indicesToCheck.get(0)[0]+index[0]][indicesToCheck.get(0)[1]+index[1]].setRevealed(true);
-                        } else if (tempTile.getTrueValue() > 0){
+                        } else if (tempTile.getTrueValue() > 0){  // is a number, reveal
                             indicesChecked.add(tempTile.getIndex());
                             board[indicesToCheck.get(0)[0]+index[0]][indicesToCheck.get(0)[1]+index[1]].setRevealed(true);
-                        } else {
+                        } else { // else, add to the checked list
                             indicesChecked.add(tempTile.getIndex());
                         }
                     }
