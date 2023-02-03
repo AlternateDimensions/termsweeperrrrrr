@@ -7,6 +7,8 @@ public class Board {
     private static int time;
     private static String timeSeconds;
     private static int bombs;
+    private static int totalBombs;
+    private static int flags;
     
     public Board(int rows, int columns){
         // Create actual board
@@ -21,10 +23,12 @@ public class Board {
         
         // Create bombs
         bombs = 0;
+        flags = 0;
         double threshold = 0.08;
         while (bombs < 16){
             bombs = generateBombs(bombs, threshold);
         }
+        totalBombs = bombs;
 
         // Create tile values
         generateValues();
@@ -140,7 +144,7 @@ public class Board {
             }
         }
         
-        if (bombs == 0){
+        if (bombs == 0 && flags == totalBombs){
             return 2;
         }
 
@@ -148,13 +152,18 @@ public class Board {
     }
 
     public void flagSquare(int r, int c){
-        if (board[r-1][c-1].flag() && board[r-1][c-1].getTrueValue() == -1){
-            
-            bombs--;
-        } else if (board[r-1][c-1].unflag() && board[r-1][c-1].getTrueValue() == -1){
-            bombs++;
+        boolean isFlagged = board[r-1][c-1].getFlagged(); // flag status of tile
+        if (isFlagged){
+            if (board[r-1][c-1].unflag() && board[r-1][c-1].getTrueValue() == -1){
+                bombs++;
+            }
+            flags--;
+        } else {
+            if (board[r-1][c-1].flag() && board[r-1][c-1].getTrueValue() == -1){
+                bombs--;
+            }
+            flags++;
         }
-
         checkSquare(r, c, true);
     }
     

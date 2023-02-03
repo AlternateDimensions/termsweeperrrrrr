@@ -51,7 +51,7 @@ public class Termsweeper {
                 state = b.checkSquare(inputRow, inputCol, false);
             } else if (inputRow > 0 && inputCol > 0 && inputAction == 2){ // is valid, wants to flag
                b.flagSquare(inputRow, inputCol); 
-            } else if (inputRow == 0 || inputCol == 0 || inputAction < 1){ // below board size
+            } else if (inputRow <= 0 || inputCol <= 0 || inputAction < 1){ // below board size
                 System.out.println("\n\033[43mYour input(s) are invalid!\033[0m");
                 try{Thread.sleep(3000);}catch(Exception ignore){}
             }
