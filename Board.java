@@ -140,7 +140,7 @@ public class Board {
             }
         }
         
-        if (bombs <= 0){
+        if (bombs == 0){
             return 2;
         }
 
@@ -148,14 +148,11 @@ public class Board {
     }
 
     public void flagSquare(int r, int c){
-        if(board[r-1][c-1].getFlagged()){
-            if (board[r-1][c-1].unflag()){
-                bombs++;
-            }
-        } else{
-            if (board[r-1][c-1].flag()){
-                bombs--;
-            }
+        if (board[r-1][c-1].flag() && board[r-1][c-1].getTrueValue() == -1){
+            
+            bombs--;
+        } else if (board[r-1][c-1].unflag() && board[r-1][c-1].getTrueValue() == -1){
+            bombs++;
         }
 
         checkSquare(r, c, true);

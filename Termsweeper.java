@@ -45,7 +45,7 @@ public class Termsweeper {
             }
 
             if (inputRow > sizeRow || inputCol > sizeCol || inputAction > 2){ // exceeds board size
-                System.out.println("\n\033[43mYour input(s) exceeds board size!\033[0m");
+                System.out.println("\n\033[43mYour input(s) exceeds limits!\033[0m");
                 try{Thread.sleep(3000);}catch(Exception ignore){}
             } else if (inputRow > 0 && inputCol > 0 && inputAction == 1){ // is valid, wants to check
                 state = b.checkSquare(inputRow, inputCol, false);
